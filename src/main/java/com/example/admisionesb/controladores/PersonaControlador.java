@@ -1,29 +1,28 @@
 package com.example.admisionesb.controladores;
 
 import com.example.admisionesb.modelos.PersonaModelo;
-import com.example.admisionesb.servicios.EncriptarClaveServicio;
-import com.example.admisionesb.servicios.PersonaServicio;
+import com.example.admisionesb.servicios.PersonaServicioImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("usuario")
 @AllArgsConstructor
 public class PersonaControlador {
-    private final EncriptarClaveServicio encriptarClave;
-    private final PersonaServicio personaServicio;
+    private final PersonaServicioImpl personaServicioImpl;
 
     @PostMapping("/iniciar_sesion")
-    public boolean iniciarSesion(@RequestBody PersonaModelo personaModelo) {
+    public boolean iniciarSesion(@RequestBody PersonaModelo personaModelo) throws IOException {
 
-        return personaServicio.servicioAutenticacion(personaModelo);
+
+        return personaServicioImpl.autenticacion(personaModelo);
     }
 
     @PostMapping("/crear_usuario")
     public PersonaModelo crearUsuario(@RequestBody PersonaModelo personaModelo) {
 
-        personaModelo.setClave(encriptarClave.encriptarClave(personaModelo.getClave()));
-
-        return personaServicio.servicioGuardarPersona(personaModelo);
+        return personaServicioImpl.guardarPersona(personaModelo);
     }
 }

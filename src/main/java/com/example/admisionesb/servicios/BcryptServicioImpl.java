@@ -5,12 +5,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EncriptarClaveServicio {
+public class BcryptServicioImpl implements BcryptServicio {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public EncriptarClaveServicio(BCryptPasswordEncoder passwordEncoder) {
+    public BcryptServicioImpl(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -18,7 +18,8 @@ public class EncriptarClaveServicio {
         return passwordEncoder.encode(clave);
     }
 
-    public boolean compararClave(String clave, String claveEncriptada) {
-        return passwordEncoder.matches(clave, claveEncriptada);
+    @Override
+    public boolean coincidencia(String textoPlano, String textoEncriptado) {
+        return passwordEncoder.matches(textoPlano, textoEncriptado);
     }
 }
